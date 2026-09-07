@@ -7,6 +7,7 @@ import com.example.flashsale.repository.OrderRepository;
 import com.example.flashsale.repository.ProductRepository;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,6 +68,10 @@ public class QueryService {
                 .toList();
     }
 
+    @Cacheable(
+            cacheNames = "product:detail",
+            key = "#productId"
+    )
     public ProductDto getProduct(
             Long productId
     ) {

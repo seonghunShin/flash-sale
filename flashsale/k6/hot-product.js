@@ -2,6 +2,9 @@ import http from 'k6/http';
 
 export const options = {
 
+    discardResponseBodies: true,
+    noConnectionReuse: false,
+    noVUConnectionReuse: false,
     scenarios: {
 
         hot_product: {
