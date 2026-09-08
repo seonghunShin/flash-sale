@@ -73,7 +73,8 @@ public class QueryService {
 
     @Cacheable(
             cacheNames = "product:detail",
-            key = "#productId"
+            key = "#productId",
+            sync = true
     )
     public ProductDto getProduct(
             Long productId
