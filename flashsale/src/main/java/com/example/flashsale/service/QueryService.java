@@ -71,6 +71,7 @@ public class QueryService {
                 .toList();
     }
 
+    // Redis (DEL "product:detail::100")로 실험.
     @Cacheable(
             cacheNames = "product:detail",
             key = "#productId",
