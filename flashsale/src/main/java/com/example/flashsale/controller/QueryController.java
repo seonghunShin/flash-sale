@@ -52,4 +52,18 @@ public class QueryController {
                 productId
         );
     }
+
+    @PatchMapping(
+            "/products/{productId}/price"
+    )
+    public void changePrice(
+            @PathVariable Long productId,
+            @RequestParam Integer price
+    ) {
+
+        queryService.changePrice(
+                productId,
+                price
+        );
+    }
 }

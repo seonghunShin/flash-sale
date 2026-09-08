@@ -5,11 +5,12 @@ import com.example.flashsale.dto.OrderDto;
 import com.example.flashsale.dto.ProductDto;
 import com.example.flashsale.repository.OrderRepository;
 import com.example.flashsale.repository.ProductRepository;
-import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
@@ -19,8 +20,10 @@ import java.util.List;
 public class QueryService {
 
     private final ProductRepository productRepository;
-
     private final OrderRepository orderRepository;
+    private final TransactionTemplate transactionTemplate;
+
+
 
     public ProductDto findByName(
             String name
@@ -95,5 +98,23 @@ public class QueryService {
                 product.getPrice(),
                 product.getStock()
         );
+    }
+
+    @Transactional
+    @CacheEvict(
+            cacheNames = "product:detail",
+            key = "#productId"
+    )
+    public void changePrice(
+            Long productId,
+            Integer price
+    ) {
+
+        Product product =
+                productRepository
+                        .findById(productId)
+                        .orElseThrow();
+
+        product.changePrice(price);
     }
 }

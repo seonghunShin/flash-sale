@@ -31,7 +31,10 @@ public class Product {
         stock--;
     }
 
-    public void changePrice(Integer price) {
+    public void changePrice(
+            Integer price
+    ) {
         this.price = price;
     }
+
 }
