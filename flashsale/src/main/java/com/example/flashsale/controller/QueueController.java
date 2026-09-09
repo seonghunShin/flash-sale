@@ -1,5 +1,7 @@
 package com.example.flashsale.controller;
 
+import com.example.flashsale.service.ReserveService;
+import com.example.flashsale.service.StockHoldService;
 import com.example.flashsale.service.WaitingQueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,8 @@ import java.util.Set;
 public class QueueController {
 
     private final WaitingQueueService queueService;
+    private final ReserveService reserveService;
+    private final StockHoldService stockHoldService;
 
     @PostMapping("/{eventId}/queue")
     public void enter(
@@ -47,6 +51,30 @@ public class QueueController {
         return queueService.admit(
                 eventId,
                 count
+        );
+    }
+
+    @PostMapping("/{eventId}/reserve")
+    public boolean reserve(
+            @PathVariable Long eventId,
+            @RequestParam Long userId
+    ) {
+
+        return reserveService.reserve(
+                eventId,
+                userId
+        );
+    }
+
+    @PostMapping("/{eventId}/stock/init")
+    public void initStock(
+            @PathVariable Long eventId,
+            @RequestParam Integer stock
+    ) {
+
+        stockHoldService.initStock(
+                eventId,
+                stock
         );
     }
 }
