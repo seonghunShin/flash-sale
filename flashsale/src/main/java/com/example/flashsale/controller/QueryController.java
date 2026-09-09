@@ -2,6 +2,7 @@ package com.example.flashsale.controller;
 
 import com.example.flashsale.dto.OrderDto;
 import com.example.flashsale.dto.ProductDto;
+import com.example.flashsale.service.PurchaseService;
 import com.example.flashsale.service.QueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 public class QueryController {
 
     private final QueryService queryService;
+    private final PurchaseService purchaseService;
 
     @GetMapping("/products/search")
     public ProductDto findByName(
@@ -64,6 +66,16 @@ public class QueryController {
         queryService.changePrice(
                 productId,
                 price
+        );
+    }
+
+    @PostMapping("/products/{productId}/buy")
+    public boolean buy(
+            @PathVariable Long productId
+    ) {
+
+        return purchaseService.buy(
+                productId
         );
     }
 }
